@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'//để điều hướng đến trang giới thiệu và quay lại trang chủ.
+import { toast } from 'react-toastify'// cung cấp tt động giống hàm alert() trong JavaScript
 import { FaUser } from 'react-icons/fa'
 import { register, reset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'

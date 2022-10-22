@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('http://fonts.cdnfonts.com/css/electrolux-sans');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: #011E41;
 }
 
 body {
@@ -12,8 +13,10 @@ body {
 }
 
 a {
+  font-weight: 500;
   text-decoration: none;
-  color: #000;
+  color: #011E41;
+ 
 }
 
 p {
@@ -33,11 +36,12 @@ h2,
 h3 {
   font-weight: 600;
   margin-bottom: 10px;
+  font-size: 2.5rem;
 }
 
 .container {
   width: 100%;
-  max-width: 960px;
+  max-width: 90%;
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
@@ -83,7 +87,11 @@ h3 {
 }
 
 .heading p {
-  color: #828282;
+  color: #011e41;
+  font-family: Electrolux Sans, Microsoft YaHei, SimSun, Heiti SC, Roboto, Arial, sans-serif;
+  line-height: 1.5;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .goals {
@@ -137,9 +145,9 @@ h3 {
 
 .btn {
   padding: 10px 20px;
-  border: 1px solid #000;
+  border: 1px solid #011E41;
   border-radius: 5px;
-  background: #000;
+  background: #011E41;
   color: #fff;
   font-size: 16px;
   font-weight: 700;
@@ -157,7 +165,7 @@ h3 {
 
 .btn-reverse {
   background: #fff;
-  color: #000;
+  color: #011E41;
 }
 
 .btn-block {

@@ -17,7 +17,9 @@ function Header() {
   return (
     <header className='header'>
       <div className='logo'>
-        <Link to='/'>GoalSetter</Link>
+      <img
+        src={require("../img/electrolux_logo_sg.png")}
+        alt=""/>
       </div>
       <ul>
         {user ? (
