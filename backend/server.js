@@ -15,6 +15,11 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+//NV
+app.use('/api/nhanvien', require('./routes/nhanVienRouters'));
+app.use('/api/thue', require('./routes/thueRouters'));
+app.use('/api/luong', require('./routes/luongRoutes'));
+app.use('/api/bhxh', require('./routes/bhxhRouters'));
 
 // Serve frontend
 if (process.env.NODE_ENV === 'production') {
