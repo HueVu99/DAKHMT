@@ -38,6 +38,10 @@ const getLuong = asyncHandler(async (req, res) => {
 
 const updateLuong = asyncHandler(async (req, res) => {
     const luong = await Luong.findById(req.params.id)
+    if (!req.body.MaNv ||!req.body.hovaTen|| !req.body.maCM|| !req.body.luongCB || !req.body.phuCap || !req.body.ngayNhap || !req.body.luongCBM|| !req.body.ngaySua ) {
+    res.status(400)
+    throw new Error('Please add a text field')
+  }
 
   if (!luong) {
     res.status(400)

@@ -39,6 +39,10 @@ const updatedBHXH = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error('BHXH not found')
   }
+  if (!req.body.MaNv ||!req.body.maBHXH|| !req.body.ngaycap|| !req.body.noiCap || !req.body.noiDK ) {
+    res.status(400)
+    throw new Error('Please add a text field')
+  }
   if (!req.user) {
     res.status(401)
     throw new Error('User not found')
@@ -50,8 +54,8 @@ const updatedBHXH = asyncHandler(async (req, res) => {
 })
 
 const deleteBHXH = asyncHandler(async (req, res) => {
-  const nhanvien = await BHXH.findById(req.params.id)
-  if (!nhanvien) {
+  const bhxh = await BHXH.findById(req.params.id)
+  if (!bhxh) {
     res.status(400)
     throw new Error('BHXH not found')
   }
@@ -59,7 +63,7 @@ const deleteBHXH = asyncHandler(async (req, res) => {
     res.status(401)
     throw new Error('User not found')
   }
-  await nhanvien.remove()
+  await bhxh.remove()
   res.status(200).json({ id: req.params.id })
 })
 

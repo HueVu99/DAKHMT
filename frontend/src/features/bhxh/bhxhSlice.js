@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import nhanvienService from "./nhanvienService";
+import bhxhService from "./bhxhService";
 
 const initialState = {
-  nhanvien: [],
+  bhxh: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -10,12 +10,24 @@ const initialState = {
 };
 
 // Get user goals
-export const getNhanViens = createAsyncThunk(
-  "nhanvien/getAll",
-  async (_, thunkAPI) => {
+export const getBHXHs = createAsyncThunk("bhxh/getAll", async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await bhxhService.getBHXH(token);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+export const createBHXH = createAsyncThunk(
+  "bhxh/create",
+  async (bhxh, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.getNhanViens(token);
+      return await bhxhService.createBHXH(bhxh, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -27,49 +39,12 @@ export const getNhanViens = createAsyncThunk(
     }
   }
 );
-
-export const createNhanVien = createAsyncThunk(
-  "nhanvien/create",
-  async (nhanvien, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.createNhanVien(nhanvien, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const editNhanVien = createAsyncThunk(
-  "nhanvien/edit",
-  async (nhanvien, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.editNhanVien(nhanvien, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const deleteNhanvien = createAsyncThunk(
-  "nhanvien/delete",
+export const deleteBHXH = createAsyncThunk(
+  "bhxh/delete",
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.deleteNhanvien(id, token);
+      return await bhxhService.deleteBHXH(id, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -81,74 +56,87 @@ export const deleteNhanvien = createAsyncThunk(
     }
   }
 );
-
-export const nhanvienSlice = createSlice({
-  name: "nhanvien",
+export const editBHXH = createAsyncThunk(
+  "bhxh/edit",
+  async (bhxh, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await bhxhService.editBHXH(bhxh, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const bhxhSlice = createSlice({
+  name: "bhxh",
   initialState,
   reducers: {
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-
-      .addCase(createNhanVien.pending, (state) => {
+      .addCase(createBHXH.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createNhanVien.fulfilled, (state, action) => {
+      .addCase(createBHXH.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.nhanvien.push(action.payload);
+        state.bhxh.push(action.payload);
       })
-      .addCase(createNhanVien.rejected, (state, action) => {
+      .addCase(createBHXH.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-
-      .addCase(editNhanVien.pending, (state) => {
+      .addCase(editBHXH.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(editNhanVien.fulfilled, (state, action) => {
+      .addCase(editBHXH.fulfilled, (state, action) => {
         state.isLoading = false;
         const {
           arg: { id },
         } = action.meta;
         if (id) {
-          state.nhanvien = state.nhanvien.map((item) =>
+          state.bhxh = state.bhxh.map((item) =>
             item._id === id ? action.payload : item
           );
         }
       })
-      .addCase(editNhanVien.rejected, (state, action) => {
+      .addCase(editBHXH.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-
-      .addCase(getNhanViens.pending, (state) => {
+      .addCase(getBHXHs.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getNhanViens.fulfilled, (state, action) => {
+      .addCase(getBHXHs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.nhanvien = action.payload;
+        state.bhxh = action.payload;
       })
-      .addCase(getNhanViens.rejected, (state, action) => {
+      .addCase(getBHXHs.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(deleteNhanvien.pending, (state) => {
+      .addCase(deleteBHXH.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteNhanvien.fulfilled, (state, action) => {
+      .addCase(deleteBHXH.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.nhanvien = state.nhanvien.filter(
-          (nhanviens) => nhanviens._id !== action.payload.id
+        state.bhxh = state.bhxh.filter(
+          (bhxhs) => bhxhs._id !== action.payload.id
         );
       })
-      .addCase(deleteNhanvien.rejected, (state, action) => {
+      .addCase(deleteBHXH.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -156,5 +144,5 @@ export const nhanvienSlice = createSlice({
   },
 });
 
-export const { reset } = nhanvienSlice.actions;
-export default nhanvienSlice.reducer;
+export const { reset } = bhxhSlice.actions;
+export default bhxhSlice.reducer;

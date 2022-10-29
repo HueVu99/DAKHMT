@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import nhanvienService from "./nhanvienService";
+import luongService from "./luongService";
 
 const initialState = {
-  nhanvien: [],
+  luong: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -10,12 +10,12 @@ const initialState = {
 };
 
 // Get user goals
-export const getNhanViens = createAsyncThunk(
-  "nhanvien/getAll",
+export const getLuongs = createAsyncThunk(
+  "luong/getAll",
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.getNhanViens(token);
+      return await luongService.getLuong(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -28,12 +28,12 @@ export const getNhanViens = createAsyncThunk(
   }
 );
 
-export const createNhanVien = createAsyncThunk(
-  "nhanvien/create",
-  async (nhanvien, thunkAPI) => {
+export const createLuong = createAsyncThunk(
+  "luong/create",
+  async (luong, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.createNhanVien(nhanvien, token);
+      return await luongService.createLuong(luong,token);
     } catch (error) {
       const message =
         (error.response &&
@@ -45,31 +45,29 @@ export const createNhanVien = createAsyncThunk(
     }
   }
 );
-
-export const editNhanVien = createAsyncThunk(
-  "nhanvien/edit",
-  async (nhanvien, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.editNhanVien(nhanvien, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const deleteNhanvien = createAsyncThunk(
-  "nhanvien/delete",
+export const deleteLuong = createAsyncThunk(
+  'luong/delete',
   async (id, thunkAPI) => {
     try {
+      const token = thunkAPI.getState().auth.user.token
+      return await luongService.deleteLuong(id, token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+export const editLuong = createAsyncThunk(
+  "bhxh/edit",
+  async (luong, thunkAPI) => {
+    try {
       const token = thunkAPI.getState().auth.user.token;
-      return await nhanvienService.deleteNhanvien(id, token);
+      return await luongService.editLuong(luong, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -82,79 +80,76 @@ export const deleteNhanvien = createAsyncThunk(
   }
 );
 
-export const nhanvienSlice = createSlice({
-  name: "nhanvien",
+export const luongSlice = createSlice({
+  name: "luong",
   initialState,
   reducers: {
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-
-      .addCase(createNhanVien.pending, (state) => {
+      .addCase(createLuong.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createNhanVien.fulfilled, (state, action) => {
+      .addCase(createLuong.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.nhanvien.push(action.payload);
+        state.luong.push(action.payload);
       })
-      .addCase(createNhanVien.rejected, (state, action) => {
+      .addCase(createLuong.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-
-      .addCase(editNhanVien.pending, (state) => {
+      .addCase(getLuongs.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(editNhanVien.fulfilled, (state, action) => {
+      .addCase(editLuong.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editLuong.fulfilled, (state, action) => {
         state.isLoading = false;
         const {
           arg: { id },
         } = action.meta;
         if (id) {
-          state.nhanvien = state.nhanvien.map((item) =>
+          state.luong = state.luong.map((item) =>
             item._id === id ? action.payload : item
           );
         }
       })
-      .addCase(editNhanVien.rejected, (state, action) => {
+      .addCase(editLuong.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-
-      .addCase(getNhanViens.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getNhanViens.fulfilled, (state, action) => {
+      .addCase(getLuongs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.nhanvien = action.payload;
+        state.luong = action.payload;
       })
-      .addCase(getNhanViens.rejected, (state, action) => {
+      .addCase(getLuongs.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(deleteNhanvien.pending, (state) => {
-        state.isLoading = true;
+      .addCase(deleteLuong.pending, (state) => {
+        state.isLoading = true
       })
-      .addCase(deleteNhanvien.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.nhanvien = state.nhanvien.filter(
-          (nhanviens) => nhanviens._id !== action.payload.id
-        );
+      .addCase(deleteLuong.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.luong = state.luong.filter(
+          (luongs) => luongs._id !== action.payload.id
+        )
       })
-      .addCase(deleteNhanvien.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      });
+      .addCase(deleteLuong.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
   },
 });
 
-export const { reset } = nhanvienSlice.actions;
-export default nhanvienSlice.reducer;
+export const { reset } = luongSlice.actions;
+export default luongSlice.reducer;

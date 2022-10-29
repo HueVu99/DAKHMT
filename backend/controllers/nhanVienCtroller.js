@@ -54,6 +54,11 @@ const updateNhanVien = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error('NhanVien not found')
   }
+  if (!req.body.MaNv ||!req.body.hovaTen|| !req.body.quocTich|| !req.body.gioiTinh || !req.body.ngaysinh ||
+     !req.body.tonGiao || !req.body.CCCD || !req.body.noiSinh ||!req.body.danToc ||!req.body.TrinhDoHocVan ||!req.body. diaChi||!req.body.sdt ||!req.body.maLuong || !req.body.maDv ||!req.body.chuyenMon ||!req.body.maBHXH ||!req.body.maThue ||!req.body.Email ) {
+    res.status(400)
+    throw new Error('Please add a text field')
+  }
   if (!req.user) {
     res.status(401)
     throw new Error('User not found')

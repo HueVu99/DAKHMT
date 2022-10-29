@@ -47,6 +47,10 @@ const updatedThue = asyncHandler(async (req, res) => {
   const updatedThue = await Thue.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   })
+  if (!req.body.MaNv ||!req.body.maThue|| !req.body.coquanThue|| !req.body.ngayDK || !req.body.maLuong || !req.body.soTienDong ) {
+    res.status(400)
+    throw new Error('Please add a text field')
+  }
    res.status(200).json(updatedThue)
 })
 
